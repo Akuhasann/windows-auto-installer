@@ -1,6 +1,7 @@
-Write-Host "================================="
+Write-Host "====================================="
 Write-Host " WINDOWS AUTO INSTALLER"
-Write-Host "================================="
+Write-Host "====================================="
+Write-Host ""
 
 $url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/apps/AdobeReader9.exe"
 $file = "$env:TEMP\AdobeReader9.exe"
