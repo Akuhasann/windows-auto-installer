@@ -37,7 +37,7 @@ function Open-Drive {
 
     Write-Host "Membuka Google Drive..."
 
-    Start-Process -FilePath $url -UseShellExecute
+    Start-Process "rundll32.exe" "url.dll,FileProtocolHandler $url"
 
 }
 
