@@ -10,8 +10,8 @@ Write-Host "Downloading Adobe Reader 9..."
 
 Invoke-WebRequest $url -OutFile $file
 
-Write-Host "Installing Adobe Reader 9..."
+Write-Host "Installing Adobe Reader 9 silently..."
 
-Start-Process $file -Wait
+Start-Process $file -ArgumentList "/sAll /rs /msi /qn" -Wait -WindowStyle Hidden
 
 Write-Host "Install selesai!"
