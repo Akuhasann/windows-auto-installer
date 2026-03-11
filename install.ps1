@@ -32,9 +32,13 @@ function Install-WinRAR {
 }
 
 function Open-Drive {
+
     $url = "https://drive.google.com/drive/folders/1larcYLCHDAJNKEsDC0L2jVfd_xcJEcCc?usp=drive_link"
+
     Write-Host "Membuka Google Drive..."
-    Start-Process $url
+
+    Start-Process "explorer.exe" $url
+
 }
 
 function Run-BatTool {
