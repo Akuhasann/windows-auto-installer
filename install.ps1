@@ -1,18 +1,3 @@
-Write-Host "====================================="
-Write-Host " WINDOWS AUTO INSTALLER"
-Write-Host "====================================="
-Write-Host ""
-
-Write-Host "1. Install Google Chrome"
-Write-Host "2. Install Mozilla Firefox"
-Write-Host "3. Install Adobe Reader 9"
-Write-Host "4. Install 7-Zip"
-Write-Host "5. Install WinRAR (Indonesia)"
-Write-Host "6. Install Semua"
-Write-Host ""
-
-$choice = Read-Host "Pilih nomor"
-
 function Install-Chrome {
     Write-Host "Installing Chrome..."
     winget install -e --id Google.Chrome --silent --accept-package-agreements --accept-source-agreements
@@ -46,6 +31,26 @@ function Install-WinRAR {
     winget install -e --id RARLab.WinRAR --silent --accept-package-agreements --accept-source-agreements
 }
 
+do {
+
+Clear-Host
+
+Write-Host "====================================="
+Write-Host " WINDOWS AUTO INSTALLER"
+Write-Host "====================================="
+Write-Host ""
+
+Write-Host "1. Install Google Chrome"
+Write-Host "2. Install Mozilla Firefox"
+Write-Host "3. Install Adobe Reader 9"
+Write-Host "4. Install 7-Zip"
+Write-Host "5. Install WinRAR (Indonesia)"
+Write-Host "6. Install Semua"
+Write-Host "0. Exit"
+Write-Host ""
+
+$choice = Read-Host "Pilih nomor"
+
 switch ($choice) {
 
     "1" { Install-Chrome }
@@ -66,9 +71,14 @@ switch ($choice) {
         Install-WinRAR
     }
 
-    default { Write-Host "Pilihan tidak valid" }
+    "0" {
+        Write-Host "Keluar dari installer..."
+    }
 
+    default {
+        Write-Host "Pilihan tidak valid"
+        Start-Sleep 2
+    }
 }
 
-Write-Host ""
-Write-Host "Install selesai!"
+} while ($choice -ne "0")
