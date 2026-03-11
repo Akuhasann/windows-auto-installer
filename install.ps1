@@ -1,20 +1,16 @@
-Write-Host "====================================="
+Write-Host "================================="
 Write-Host " WINDOWS AUTO INSTALLER"
-Write-Host "====================================="
-Write-Host ""
+Write-Host "================================="
 
-$installer = ".\apps\Adobe Reader 9.exe"
+$url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/apps/Adobe%20Reader%209.exe"
+$file = "$env:TEMP\AdobeReader9.exe"
 
-if (Test-Path $installer) {
+Write-Host "Downloading Adobe Reader 9..."
 
-    Write-Host "Installing Adobe Reader 9..."
+Invoke-WebRequest $url -OutFile $file
 
-    Start-Process $installer -Wait
+Write-Host "Installing Adobe Reader 9..."
 
-    Write-Host "Install selesai!"
+Start-Process $file -Wait
 
-} else {
-
-    Write-Host "File installer tidak ditemukan!"
-
-}
+Write-Host "Install selesai!"
