@@ -37,7 +37,7 @@ function Open-Drive {
 
     Write-Host "Membuka Google Drive..."
 
-    Start-Process "explorer.exe" $url
+    cmd /c start "" $url
 
 }
 
