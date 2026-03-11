@@ -31,6 +31,26 @@ function Install-WinRAR {
     winget install -e --id RARLab.WinRAR --silent --accept-package-agreements --accept-source-agreements
 }
 
+function Open-Drive {
+    $url = "https://drive.google.com/drive/folders/1larcYLCHDAJNKEsDC0L2jVfd_xcJEcCc?usp=drive_link"
+    Write-Host "Membuka Google Drive..."
+    Start-Process $url
+}
+
+function Run-BatTool {
+
+    Write-Host "Downloading BAT tool..."
+
+    $url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/disableupdate.bat"
+    $file = "$env:TEMP\disableupdate.bat"
+
+    Invoke-WebRequest $url -OutFile $file
+
+    Write-Host "Running BAT tool..."
+
+    Start-Process $file -Wait
+}
+
 do {
 
 Clear-Host
@@ -44,8 +64,10 @@ Write-Host "1. Install Google Chrome"
 Write-Host "2. Install Mozilla Firefox"
 Write-Host "3. Install Adobe Reader 9"
 Write-Host "4. Install 7-Zip"
-Write-Host "5. Install WinRAR (Indonesia)"
+Write-Host "5. Install WinRAR"
 Write-Host "6. Install Semua"
+Write-Host "7. Download dari Google Drive"
+Write-Host "8. Matikan Update Windows"
 Write-Host "0. Exit"
 Write-Host ""
 
@@ -70,6 +92,10 @@ switch ($choice) {
         Install-7zip
         Install-WinRAR
     }
+
+    "7" { Open-Drive }
+
+    "8" { Run-BatTool }
 
     "0" {
         Write-Host "Keluar dari installer..."
