@@ -74,16 +74,6 @@ function Install-WinRAR {
     Write-Host "Installing WinRAR..."
     winget install -e --id RARLab.WinRAR --silent --accept-package-agreements --accept-source-agreements
 }
-
-function Install-Adobe { 
-Write-Host "Downloading Adobe Reader 9..." 
-$url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/apps/AdobeReader9.exe" 
-$file = "$env:TEMP\AdobeReader9.exe" 
-Invoke-WebRequest $url -OutFile $file Write-Host "Installing Adobe Reader 9..." Start-Process 
-$file -ArgumentList "/sAll /rs /msi /qn" -Wait -WindowStyle Hidden 
-Remove-Item $file 
-}
-
 function Open-Drive {
 
     $url = "https://drive.google.com/drive/folders/1larcYLCHDAJNKEsDC0L2jVfd_xcJEcCc?usp=drive_link"
