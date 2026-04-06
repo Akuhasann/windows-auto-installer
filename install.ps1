@@ -1,6 +1,50 @@
+function Ensure-Winget {
+    Write-Host "Checking winget..."
+
+    if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
+        Write-Host "Winget tidak ditemukan, menginstall..."
+
+        $wingetFile = "$env:TEMP\winget.msixbundle"
+
+        Invoke-WebRequest -Uri https://aka.ms/getwinget -OutFile $wingetFile
+
+        try {
+            Add-AppxPackage $wingetFile -ErrorAction Stop
+
+            # Refresh PATH
+            $env:Path += ";$env:LOCALAPPDATA\Microsoft\WindowsApps"
+
+            Start-Sleep 2
+
+            if (Get-Command winget -ErrorAction SilentlyContinue) {
+                Write-Host "Winget berhasil diinstall dan siap digunakan."
+            } else {
+                Write-Host "Winget terinstall tapi belum terdeteksi. Silakan restart PowerShell."
+            }
+        }
+        catch {
+            Write-Host "Gagal install winget. Kemungkinan butuh dependency."
+        }
+    }
+    else {
+        Write-Host "Winget sudah tersedia."
+    }
+}
 function Install-Chrome {
     Write-Host "Installing Chrome..."
-    winget install -e --id Google.Chrome --silent --accept-package-agreements --accept-source-agreements
+
+    if (Get-Command winget -ErrorAction SilentlyContinue) {
+        winget install -e --id Google.Chrome --silent --accept-package-agreements --accept-source-agreements
+    }
+    else {
+        Write-Host "Winget tidak tersedia, download manual..."
+
+        $url = "https://www.google.com/chrome/download/latest/chrome/install.exe"
+        $file = "$env:TEMP\chrome.exe"
+
+        Invoke-WebRequest $url -OutFile $file
+        Start-Process $file -ArgumentList "/silent /install" -Wait
+    }
 }
 
 function Install-Firefox {
@@ -55,6 +99,8 @@ function Run-BatTool {
     Start-Process $file -Wait
 }
 
+Ensure-Winget
+Start-Sleep 2
 do {
 
 Clear-Host
