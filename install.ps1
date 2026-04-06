@@ -1,55 +1,53 @@
-function Ensure-Winget {
-    Write-Host "Checking winget..."
+ 
+# function Install-Chrome {
+#     Write-Host "Downloading Google Chrome..."
+    
+#     # URL file installer yang disimpan di GitHub
+#     $url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/apps/Chrome.msi"
+#     $file = "$env:TEMP\Chrome.msi"
 
-    if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
-        Write-Host "Winget tidak ditemukan, menginstall..."
+#     # Download installer
+#     Invoke-WebRequest $url -OutFile $file
 
-        $wingetFile = "$env:TEMP\winget.msixbundle"
+#     Write-Host "Installing Google Chrome..."
+#     Start-Process $file -ArgumentList "/silent /install" -Wait -WindowStyle Hidden
 
-        Invoke-WebRequest -Uri https://aka.ms/getwinget -OutFile $wingetFile
+#     # Hapus file installer setelah selesai
+#     Remove-Item $file
+# }
 
-        try {
-            Add-AppxPackage $wingetFile -ErrorAction Stop
-
-            # Refresh PATH
-            $env:Path += ";$env:LOCALAPPDATA\Microsoft\WindowsApps"
-
-            Start-Sleep 2
-
-            if (Get-Command winget -ErrorAction SilentlyContinue) {
-                Write-Host "Winget berhasil diinstall dan siap digunakan."
-            } else {
-                Write-Host "Winget terinstall tapi belum terdeteksi. Silakan restart PowerShell."
-            }
-        }
-        catch {
-            Write-Host "Gagal install winget. Kemungkinan butuh dependency."
-        }
-    }
-    else {
-        Write-Host "Winget sudah tersedia."
-    }
-}
 function Install-Chrome {
-    Write-Host "Installing Chrome..."
+    Write-Host "Downloading Google Chrome..."
+    
+    # URL installer terbaru Chrome (offline installer)
+    $url = "https://dl.google.com/chrome/install/375.126/chrome_installer.exe"
+    $file = "$env:TEMP\Chrome.exe"
 
-    if (Get-Command winget -ErrorAction SilentlyContinue) {
-        winget install -e --id Google.Chrome --silent --accept-package-agreements --accept-source-agreements
-    }
-    else {
-        Write-Host "Winget tidak tersedia, download manual..."
+    # Download installer
+    Invoke-WebRequest $url -OutFile $file
 
-        $url = "https://www.google.com/chrome/download/latest/chrome/install.exe"
-        $file = "$env:TEMP\chrome.exe"
+    Write-Host "Installing Google Chrome..."
+    Start-Process $file -ArgumentList "/silent /install" -Wait -WindowStyle Hidden
 
-        Invoke-WebRequest $url -OutFile $file
-        Start-Process $file -ArgumentList "/silent /install" -Wait
-    }
+    # Hapus file installer setelah selesai
+    Remove-Item $file
 }
 
 function Install-Firefox {
+    Write-Host "Downloading Firefox..."
+    
+    # URL file installer yang disimpan di GitHubb
+    $url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/apps/Firefox.exe"
+    $file = "$env:TEMP\Firefox.exe"
+
+    # Download installer
+    Invoke-WebRequest $url -OutFile $file
+
     Write-Host "Installing Firefox..."
-    winget install -e --id Mozilla.Firefox --silent --accept-package-agreements --accept-source-agreements
+    Start-Process $file -ArgumentList "/silent /install" -Wait -WindowStyle Hidden
+
+    # Hapus file installer setelah selesai
+    Remove-Item $file
 }
 
 function Install-Adobe {
@@ -66,13 +64,32 @@ function Install-Adobe {
 }
 
 function Install-7zip {
+    Write-Host "Downloading 7-Zip..."
+    $url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/apps/7zip.exe"
+    $file = "$env:TEMP\7zip.exe"
+
+    Invoke-WebRequest $url -OutFile $file
+
     Write-Host "Installing 7-Zip..."
-    winget install -e --id 7zip.7zip --silent --accept-package-agreements --accept-source-agreements
+    Start-Process $file -ArgumentList "/silent /install" -Wait -WindowStyle Hidden
+
+    # Hapus file installer setelah selesai
+    Remove-Item $file
 }
 
 function Install-WinRAR {
+    Write-Host "Downloading WinRAR..."
+    $url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/apps/WinRAR.exe"
+    $file = "$env:TEMP\WinRAR.exe"
+
+    Invoke-WebRequest $url -OutFile $file
+
+
     Write-Host "Installing WinRAR..."
-    winget install -e --id RARLab.WinRAR --silent --accept-package-agreements --accept-source-agreements
+    Start-Process $file -ArgumentList "/silent /install" -Wait -WindowStyle Hidden
+
+    # Hapus file installer setelah selesai
+    Remove-Item $file
 }
 function Open-Drive {
 
@@ -97,9 +114,7 @@ function Run-BatTool {
 
     Start-Process $file -Wait
 }
-
-Ensure-Winget
-Start-Sleep 2
+ 
 do {
 
 Clear-Host
