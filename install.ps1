@@ -145,6 +145,7 @@ Write-Host "5. Install WinRAR"
 Write-Host "6. Install Semua"
 Write-Host "7. Download dari Google Drive"
 Write-Host "8. Matikan Update Windows"
+Write-Host "8. Matikan Hostpot"
 Write-Host "0. Exit"
 Write-Host ""
 
@@ -173,6 +174,8 @@ switch ($choice) {
     "7" { Open-Drive }
 
     "8" { Run-BatTool }
+    
+    "8" { Run-stopHotspot }
 
     "0" {
         Write-Host "Keluar dari installer..."
