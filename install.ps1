@@ -114,7 +114,20 @@ function Run-BatTool {
 
     Start-Process $file -Wait
 }
- 
+
+function Run-stopHotspot {
+
+    Write-Host "Downloading BAT tool..."
+
+    $url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/StopHostpot.bat"
+    $file = "$env:TEMP\StopHostpot.bat"
+
+    Invoke-WebRequest $url -OutFile $file
+
+    Write-Host "Running BAT tool as Administrator..."
+
+    Start-Process $file -Verb RunAs -Wait
+}
 do {
 
 Clear-Host
