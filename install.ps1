@@ -65,8 +65,8 @@ function Install-Adobe {
 
 function Install-7zip {
     Write-Host "Downloading 7-Zip..."
-    $url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/apps/7zip.exe"
-    $file = "$env:TEMP\7zip.exe"
+    $url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/apps/7Zip.exe"
+    $file = "$env:TEMP\7Zip.exe"
 
     Invoke-WebRequest $url -OutFile $file
 
@@ -79,8 +79,8 @@ function Install-7zip {
 
 function Install-WinRAR {
     Write-Host "Downloading WinRAR..."
-    $url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/apps/WinRAR.exe"
-    $file = "$env:TEMP\WinRAR.exe"
+    $url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/apps/Winrar.exe"
+    $file = "$env:TEMP\Winrar.exe"
 
     Invoke-WebRequest $url -OutFile $file
 
