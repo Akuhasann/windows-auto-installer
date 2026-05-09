@@ -79,17 +79,18 @@ function Install-7zip {
 
 function Install-WinRAR {
     Write-Host "Downloading WinRAR..."
+
     $url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/apps/Winrar.exe"
     $file = "$env:TEMP\Winrar.exe"
 
     Invoke-WebRequest $url -OutFile $file
 
+    Write-Host "Installing WinRAR silently..."
 
-    Write-Host "Installing WinRAR..."
-    Start-Process $file -ArgumentList "/silent /install" -Wait -WindowStyle Hidden
+    Start-Process $file -ArgumentList "/S" -Wait -WindowStyle Hidden
 
-    # Hapus file installer setelah selesai
-    Remove-Item $file
+    Write-Host "Cleaning up..."
+    Remove-Item $file -Force
 }
 function Open-Drive {
 
