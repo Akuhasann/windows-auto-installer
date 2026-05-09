@@ -71,7 +71,7 @@ function Install-7zip {
     Invoke-WebRequest $url -OutFile $file
 
     Write-Host "Installing 7-Zip..."
-    Start-Process $file -ArgumentList "/install" -Wait -WindowStyle Hidden
+    Start-Process $file -ArgumentList "/S" -Wait -WindowStyle Hidden
 
     # Hapus file installer setelah selesai
     Remove-Item $file
