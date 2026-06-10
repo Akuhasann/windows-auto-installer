@@ -203,6 +203,8 @@ switch ($choice) {
     
     "9" { Run-stopHotspot }
 
+    "10" { Run-clearsampah }
+
     "0" {
         Write-Host "Keluar dari installer..."
     }
