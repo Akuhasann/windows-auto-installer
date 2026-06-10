@@ -17,20 +17,30 @@
 # }
 
 function Install-Chrome {
-    Write-Host "Downloading Google Chrome..."
-    
-    # URL installer terbaru Chrome (offline installer)
-    $url = "https://dl.google.com/chrome/install/375.126/chrome_installer.exe"
-    $file = "$env:TEMP\Chrome.exe"
-
-    # Download installer
-    Invoke-WebRequest $url -OutFile $file
-
-    Write-Host "Installing Google Chrome..."
-    Start-Process $file -ArgumentList "/silent /install" -Wait -WindowStyle Hidden
-
-    # Hapus file installer setelah selesai
-    Remove-Item $file
+      Write-Host "Downloading Chrome..."
+  
+  # Jalur RAW resmi untuk mengambil file asli dari repositori kamu
+  $url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/apps/Chrome.exe"
+  $file = "$env:USERPROFILE\Downloads\ChromeSetup.exe"
+  
+  # Hapus file sisa percobaan sebelumnya jika ada
+  if (Test-Path $file) { Remove-Item $file -Force }
+  
+  # Download menggunakan curl (ditambahkan -k untuk jaga-jaga)
+  curl.exe -L -k $url -o $file
+  
+  if (Test-Path $file) {
+      $fileSize = (Get-Item $file).Length
+      # Cek apakah file terdownload dengan benar (di atas 1 MB)
+      if ($fileSize -gt 1000000) { 
+          Write-Host "Download sukses! Menjalankan installer Chrome..." -ForegroundColor Green
+          Start-Process $file
+      } else {
+          Write-Error "File yang terunduh terlalu kecil ($fileSize bytes). Link Raw kemungkinan salah atau diblokir."
+      }
+  } else {
+      Write-Error "Gagal mengunduh file dari GitHub."
+  }
 }
 
 function Install-Firefox {
@@ -122,6 +132,20 @@ function Run-stopHotspot {
 
     $url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/StopHostpot.bat"
     $file = "$env:TEMP\StopHostpot.bat"
+
+    Invoke-WebRequest $url -OutFile $file
+
+    Write-Host "Running BAT tool as Administrator..."
+
+    Start-Process $file -Verb RunAs -Wait
+}
+
+function Run-clearsampah {
+
+    Write-Host "Downloading BAT tool..."
+
+    $url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/clear.bat"
+    $file = "$env:TEMP\clear.bat"
 
     Invoke-WebRequest $url -OutFile $file
 
