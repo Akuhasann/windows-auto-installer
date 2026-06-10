@@ -142,7 +142,7 @@ function Run-stopHotspot {
 
 function Run-clearsampah {
 
-       Write-Host "Downloading BAT tool..."  
+       Write-Host "Sedang Download BAT tool..."  
    
    # Jalur RAW GitHub kamu
    $url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/clear.bat"
