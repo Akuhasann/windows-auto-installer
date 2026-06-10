@@ -142,16 +142,28 @@ function Run-stopHotspot {
 
 function Run-clearsampah {
 
-         Write-Host "Downloading BAT tool..."
+         Write-Host "Sedang Download BAT tool..." -ForegroundColor Cyan
+   
+$url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/clear.bat"
 
-    $url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/clear.bat"
-    $file = "$env:TEMP\clear.bat"
+# SOLUSI: Simpan di folder netral (C:\Windows\clear.bat), jangan di $env:TEMP!
+$file = "C:\Windows\clear.bat"
 
-    Invoke-WebRequest $url -OutFile $file
+if (Test-Path $file) { Remove-Item $file -Force }
 
-    Write-Host "Running BAT tool as Administrator..."
+curl.exe -L -k $url -o $file
 
+if (Test-Path $file) {
+    Write-Host "Running BAT tool as Administrator..." -ForegroundColor Green
+    
     Start-Process $file -Verb RunAs -Wait
+    
+    # Hapus setelah selesai
+    Remove-Item $file -Force
+    Write-Host "Semua pembersihan (Windows Temp, User Temp, & Prefetch) sukses!" -ForegroundColor Green
+} else {
+    Write-Error "Gagal mengunduh file clear.bat."
+}
 }
 do {
 
