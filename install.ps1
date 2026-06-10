@@ -171,6 +171,7 @@ Write-Host "6. Install Semua"
 Write-Host "7. Download dari Google Drive"
 Write-Host "8. Matikan Update Windows"
 Write-Host "9. Matikan Hostpot"
+Write-Host "10. Clear Sampah"
 Write-Host "0. Exit"
 Write-Host ""
 
