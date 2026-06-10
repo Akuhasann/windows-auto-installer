@@ -142,30 +142,16 @@ function Run-stopHotspot {
 
 function Run-clearsampah {
 
-       Write-Host "Sedang Download BAT tool..."  
-   
-   # Jalur RAW GitHub kamu
-   $url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/clear.bat"
-   $file = "$env:TEMP\clear.bat"
-   
-   # Amankan dari sisa file lama
-   if (Test-Path $file) { Remove-Item $file -Force }
-   
-   # Gunakan curl agar kebal dari error TLS/SSL Schannel Windows
-   curl.exe -L -k $url -o $file
-   
-   if (Test-Path $file) {
-       Write-Host "Running BAT tool as Administrator..." -ForegroundColor Green
-       
-       # Menjalankan BAT sebagai Admin dan menunggu sampai kelar baru lanjut script PS berikutnya
-       Start-Process $file -Verb RunAs -Wait
-       
-       # Hapus file bat setelah selesai digunakan agar bersih
-       Remove-Item $file -Force
-       Write-Host "Pembersihan sampah selesai!" -ForegroundColor Green
-   } else {
-       Write-Error "Gagal mengunduh file clear.bat dari GitHub."
-   }
+         Write-Host "Downloading BAT tool..."
+
+    $url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/clear.bat"
+    $file = "$env:TEMP\clear.bat"
+
+    Invoke-WebRequest $url -OutFile $file
+
+    Write-Host "Running BAT tool as Administrator..."
+
+    Start-Process $file -Verb RunAs -Wait
 }
 do {
 
