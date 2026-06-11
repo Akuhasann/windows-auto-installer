@@ -142,54 +142,236 @@ function Run-stopHotspot {
 
 function Run-optimasiservis {
 
-         Write-Host "Sedang Download BAT tool..." -ForegroundColor Cyan
-   
-$url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/optimasi_servis.bat"
-
-# SOLUSI: Simpan di folder netral (C:\Windows\optimasi_servis.bat), jangan di $env:TEMP!
-$file = "C:\Windows\optimasi_servis.bat"
-
-if (Test-Path $file) { Remove-Item $file -Force }
-
-curl.exe -L -k $url -o $file
-
-if (Test-Path $file) {
-    Write-Host "Running BAT tool as Administrator..." -ForegroundColor Green
-    
-    Start-Process $file -Verb RunAs -Wait
-    
-    # Hapus setelah selesai
-    Remove-Item $file -Force
-    Write-Host "Semua services sukses dimatikan" -ForegroundColor Green
-} else {
-    Write-Error "Gagal mengunduh file clear.bat."
+      Write-Host "Sedang Download BAT tool..." -ForegroundColor Cyan
+         
+      $url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/aktivasi_windows.bat"
+      
+      # SOLUSI: Simpan di folder netral (C:\Windows\aktivasi_windows.bat), jangan di $env:TEMP!
+      $file = "C:\Windows\aktivasi_windows.bat"
+      
+      if (Test-Path $file) { Remove-Item $file -Force }
+      
+      curl.exe -L -k $url -o $file
+      
+      if (Test-Path $file) {
+          Write-Host "Running BAT tool as Administrator..." -ForegroundColor Green
+          
+          Start-Process $file -Verb RunAs -Wait
+          
+          # Hapus setelah selesai
+          Remove-Item $file -Force
+          Write-Host "Aktivasi Windows Berhasil" -ForegroundColor Green
+      } else {
+          Write-Error "Gagal mengunduh file clear.bat."
+      }
 }
+
+function Run-uninstalledge {
+
+      Write-Host "Sedang Download BAT tool..." -ForegroundColor Cyan
+         
+      $url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/uninstall_edge.bat"
+      
+      # SOLUSI: Simpan di folder netral (C:\Windows\uninstall_edge.bat), jangan di $env:TEMP!
+      $file = "C:\Windows\uninstall_edge.bat"
+      
+      if (Test-Path $file) { Remove-Item $file -Force }
+      
+      curl.exe -L -k $url -o $file
+      
+      if (Test-Path $file) {
+          Write-Host "Running BAT tool as Administrator..." -ForegroundColor Green
+          
+          Start-Process $file -Verb RunAs -Wait
+          
+          # Hapus setelah selesai
+          Remove-Item $file -Force
+          Write-Host "Uninstall Edge Berhasil" -ForegroundColor Green
+      } else {
+          Write-Error "Gagal mengunduh file clear.bat."
+      }
 }
 
 function Run-clearsampah {
 
-         Write-Host "Sedang Download BAT tool..." -ForegroundColor Cyan
-   
-$url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/clear.bat"
-
-# SOLUSI: Simpan di folder netral (C:\Windows\clear.bat), jangan di $env:TEMP!
-$file = "C:\Windows\clear.bat"
-
-if (Test-Path $file) { Remove-Item $file -Force }
-
-curl.exe -L -k $url -o $file
-
-if (Test-Path $file) {
-    Write-Host "Running BAT tool as Administrator..." -ForegroundColor Green
-    
-    Start-Process $file -Verb RunAs -Wait
-    
-    # Hapus setelah selesai
-    Remove-Item $file -Force
-    Write-Host "Semua pembersihan (Windows Temp, User Temp, & Prefetch) sukses!" -ForegroundColor Green
-} else {
-    Write-Error "Gagal mengunduh file clear.bat."
+      Write-Host "Sedang Download BAT tool..." -ForegroundColor Cyan
+         
+      $url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/clear.bat"
+      
+      # SOLUSI: Simpan di folder netral (C:\Windows\clear.bat), jangan di $env:TEMP!
+      $file = "C:\Windows\clear.bat"
+      
+      if (Test-Path $file) { Remove-Item $file -Force }
+      
+      curl.exe -L -k $url -o $file
+      
+      if (Test-Path $file) {
+          Write-Host "Running BAT tool as Administrator..." -ForegroundColor Green
+          
+          Start-Process $file -Verb RunAs -Wait
+          
+          # Hapus setelah selesai
+          Remove-Item $file -Force
+          Write-Host "Semua pembersihan (Windows Temp, User Temp, & Prefetch) sukses!" -ForegroundColor Green
+      } else {
+          Write-Error "Gagal mengunduh file clear.bat."
+      }
 }
+
+function Run-WindowsModule {
+    Clear-Host
+    Write-Host "===================================================" -ForegroundColor Cyan
+    Write-Host "          INFORMASI LISENSI WINDOWS SAAT INI       " -ForegroundColor Cyan
+    Write-Host "===================================================" -ForegroundColor Cyan
+    Write-Host ""
+
+    # 1. Menampilkan info lisensi utama
+    cscript //nologo $env:SystemRoot\system32\slmgr.vbs /dli | Select-String "Name:","Description:","License Status:","KMS machine" | ForEach-Object { Write-Host $_.Line }
+    
+    # PERBAIKAN DI SINI: Menampilkan teks tanggal kedaluwarsa asli dari slmgr /xpr
+    cscript //nologo $env:SystemRoot\system32\slmgr.vbs /xpr | Select-String "expiry", "expire", "permanently", "kedaluwarsa" | ForEach-Object { Write-Host $_.Line -ForegroundColor Green }
+    
+    Write-Host ""
+    Write-Host "===================================================" -ForegroundColor Cyan
+    Write-Host ""
+
+    # Cek status aktif
+    $isLicensed = cscript //nologo $env:SystemRoot\system32\slmgr.vbs /dli | Select-String "License Status: Licensed"
+    
+    if ($isLicensed) {
+        Write-Host "[PEMBERITAHUAN] Windows di PC ini terdeteksi SUDAH AKTIF." -ForegroundColor Yellow
+        Write-Host "Silakan lihat informasi masa aktif di atas sebelum memutuskan."
+        Write-Host ""
+        Write-Host "[1] Tetap paksa aktivasi ulang lewat KMS (Timpa lisensi)"
+        Write-Host "[2] Kembali ke Menu Utama"
+        Write-Host ""
+        $konfirmasi = Read-Host "Masukkan pilihan kamu (1/2)"
+        if ($konfirmasi -ne "1") { Show-MainMenu; return }
+    }
+
+    # Proses Aktivasi Windows
+    Clear-Host
+    Write-Host "===================================================" -ForegroundColor Cyan
+    Write-Host "         MEMULAI AKTIVASI WINDOWS 10/11 PRO        " -ForegroundColor Cyan
+    Write-Host "===================================================" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "[!] Pastikan PC terhubung ke Internet..." -ForegroundColor Yellow
+    Write-Host ""
+
+    Write-Host "[+] Menanamkan Lisensi KMS Pro..." -ForegroundColor Gray
+    slmgr /ipk W269N-WFGWX-YVC9B-4J6C9-T83GX *>$null
+
+    Write-Host "[+] Menghubungkan ke Server KMS..." -ForegroundColor Gray
+    slmgr /skms kms8.msguides.com *>$null
+
+    Write-Host "[+] Memproses aktivasi online..." -ForegroundColor Gray
+    cscript //nologo $env:SystemRoot\system32\slmgr.vbs /ato *>$null
+
+    Write-Host "---------------------------------------------------"
+    Write-Host "[+] Memeriksa status hasil aktivasi akhir..."
+    Write-Host "---------------------------------------------------"
+
+    $statusAkhir = cscript //nologo $env:SystemRoot\system32\slmgr.vbs /dli | Select-String "License Status: Licensed"
+    if ($statusAkhir) {
+        Write-Host "[SUKSES] Windows 10/11 Pro BERHASIL DIAKTIVASI!" -ForegroundColor Green
+    } else {
+        Write-Host "[GAGAL] Windows belum berhasil diaktivasi." -ForegroundColor Red
+        Write-Host "Solusi: Periksa koneksi internet atau server KMS sedang down."
+    }
+
+    Read-Host "`nTekan Enter untuk kembali ke Menu Utama..."
+    Show-MainMenu
+}
+
+function Run-OfficeModule {
+    Clear-Host
+    Write-Host "===================================================" -ForegroundColor Cyan
+    Write-Host "        MENCARI INSTALASI MICROSOFT OFFICE...      " -ForegroundColor Cyan
+    Write-Host "===================================================" -ForegroundColor Cyan
+    Write-Host ""
+
+    $officeFolders = @(
+        "$env:ProgramFiles\Microsoft Office\Office16",
+        "${env:ProgramFiles(x86)}\Microsoft Office\Office16",
+        "$env:ProgramFiles\Microsoft Office\Office15",
+        "${env:ProgramFiles(x86)}\Microsoft Office\Office15",
+        "$env:ProgramFiles\Microsoft Office\Office14",
+        "${env:ProgramFiles(x86)}\Microsoft Office\Office14"
+    )
+
+    $officePath = $null
+    foreach ($folder in $officeFolders) {
+        if (Test-Path "$folder\ospp.vbs") {
+            $officePath = $folder
+            break
+        }
+    }
+
+    if ($null -eq $officePath) {
+        Write-Host "[X] ERROR: Microsoft Office TIDAK TERDETEKSI di komputer ini!" -ForegroundColor Red
+        Read-Host "`nTekan Enter untuk kembali ke Menu Utama..."
+        Show-MainMenu
+        return
+    }
+
+    Set-Location $officePath
+    Write-Host "[+] Ditemukan folder Office pada:" -ForegroundColor Gray
+    Write-Host "    `"$officePath`"" -ForegroundColor DarkGray
+    Write-Host "---------------------------------------------------"
+    Write-Host "          INFORMASI LISENSI OFFICE SAAT INI        " -ForegroundColor Cyan
+    Write-Host "---------------------------------------------------"
+
+    # PERBAIKAN DI SINI: Menggunakan pola regex agar findstr/Select-String lebih fleksibel membaca huruf besar/kecil
+    cscript //nologo ospp.vbs /dstatus | Select-String "NAME:", "DESCRIPTION:", "STATUS:", "ERROR CODE:" | ForEach-Object { Write-Host $_.Line }
+    
+    # Menangkap sisa hari aktif baik huruf besar maupun kecil
+    cscript //nologo ospp.vbs /dstatus | Select-String "REMAINING GRACE", "remaining grace" | ForEach-Object { Write-Host $_.Line -ForegroundColor Green }
+
+    Write-Host ""
+    Write-Host "===================================================" -ForegroundColor Cyan
+    Write-Host ""
+
+    $officeAktif = cscript //nologo ospp.vbs /dstatus | Select-String "LICENSED"
+
+    if ($officeAktif) {
+        Write-Host "[PEMBERITAHUAN] Office di PC ini terdeteksi SUDAH AKTIF (LICENSED)." -ForegroundColor Yellow
+        Write-Host ""
+        Write-Host "[1] Tetap paksa aktivasi ulang lewat KMS (Timpa lisensi)"
+        Write-Host "[2] Kembali ke Menu Utama"
+        Write-Host ""
+        $konfirmasi = Read-Host "Masukkan pilihan kamu (1/2)"
+        if ($konfirmasi -ne "1") { Show-MainMenu; return }
+    }
+
+    # Proses Aktivasi Office
+    Clear-Host
+    Write-Host "===================================================" -ForegroundColor Cyan
+    Write-Host "           MEMULAI AKTIVASI ONLINE OFFICE          " -ForegroundColor Cyan
+    Write-Host "===================================================" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "[!] Pastikan PC terhubung ke Internet..." -ForegroundColor Yellow
+    Write-Host ""
+
+    Write-Host "[+] Menghubungkan ke Server KMS..." -ForegroundColor Gray
+    cscript //nologo ospp.vbs /sethst:kms8.msguides.com *>$null
+
+    Write-Host "[+] Memproses aktivasi online..." -ForegroundColor Gray
+    cscript //nologo ospp.vbs /act *>$null
+
+    Write-Host "---------------------------------------------------"
+    Write-Host "[+] Memeriksa status hasil aktivasi akhir..."
+    Write-Host "---------------------------------------------------"
+
+    $statusAkhir = cscript //nologo ospp.vbs /dstatus | Select-String "LICENSED"
+    if ($statusAkhir) {
+        Write-Host "[SUKSES] Microsoft Office BERHASIL DIAKTIVASI!" -ForegroundColor Green
+    } else {
+        Write-Host "[GAGAL] Office belum berhasil diaktivasi." -ForegroundColor Red
+        Write-Host "Solusi: Cek koneksi internet atau convert Office ke Volume (KMS) Edition dahulu."
+    }
+
+    Read-Host "`nTekan Enter untuk kembali ke Menu Utama..."
+    Show-MainMenu
 }
 do {
 
@@ -211,6 +393,9 @@ Write-Host "8. Matikan Update Windows"
 Write-Host "9. Matikan Hostpot"
 Write-Host "10. Clear Sampah"
 Write-Host "11. Optimasi Servis"
+Write-Host "12. Uninstall Edge"
+Write-Host "13. Aktivasi Windows"
+Write-Host "14. Aktivasi Office"
 Write-Host "0. Exit"
 Write-Host ""
 
@@ -245,6 +430,12 @@ switch ($choice) {
     "10" { Run-clearsampah }
 
     "11" { Run-optimasiservis }
+
+    "12" { Run-uninstalledge }
+
+    "13" { Run-WindowsModule }
+
+    "14" { Run-OfficeModule }
 
     "0" {
         Write-Host "Keluar dari installer..."
