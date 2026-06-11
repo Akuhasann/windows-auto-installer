@@ -144,10 +144,10 @@ function Run-optimasiservis {
 
       Write-Host "Sedang Download BAT tool..." -ForegroundColor Cyan
          
-      $url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/aktivasi_windows.bat"
+      $url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/optimasi_servis.bat"
       
-      # SOLUSI: Simpan di folder netral (C:\Windows\aktivasi_windows.bat), jangan di $env:TEMP!
-      $file = "C:\Windows\aktivasi_windows.bat"
+      # SOLUSI: Simpan di folder netral (C:\Windows\optimasi_servis.bat), jangan di $env:TEMP!
+      $file = "C:\Windows\optimasi_servis.bat"
       
       if (Test-Path $file) { Remove-Item $file -Force }
       
