@@ -210,6 +210,7 @@ Write-Host "7. Download dari Google Drive"
 Write-Host "8. Matikan Update Windows"
 Write-Host "9. Matikan Hostpot"
 Write-Host "10. Clear Sampah"
+Write-Host "11. Optimasi Servis"
 Write-Host "0. Exit"
 Write-Host ""
 
@@ -242,6 +243,8 @@ switch ($choice) {
     "9" { Run-stopHotspot }
 
     "10" { Run-clearsampah }
+
+    "11" { Run-optimasiservis }
 
     "0" {
         Write-Host "Keluar dari installer..."
