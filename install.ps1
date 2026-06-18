@@ -17,30 +17,35 @@
 # }
 
 function Install-Chrome {
-      Write-Host "Downloading Chrome..."
+    Write-Host "Downloading Chrome..."
   
-  # Jalur RAW resmi untuk mengambil file asli dari repositori kamu
-  $url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/apps/Chrome.exe"
-  $file = "$env:USERPROFILE\Downloads\ChromeSetup.exe"
+    # Jalur RAW resmi untuk mengambil file asli dari repositori kamu
+    $url = "https://raw.githubusercontent.com/Akuhasann/windows-auto-installer/main/apps/Chrome.exe"
+    $file = "$env:USERPROFILE\Downloads\ChromeSetup.exe"
   
-  # Hapus file sisa percobaan sebelumnya jika ada
-  if (Test-Path $file) { Remove-Item $file -Force }
+    # Hapus file sisa percobaan sebelumnya jika ada
+    if (Test-Path $file) { Remove-Item $file -Force }
   
-  # Download menggunakan curl (ditambahkan -k untuk jaga-jaga)
-  curl.exe -L -k $url -o $file
+    # Download menggunakan curl
+    curl.exe -L -k $url -o $file
   
-  if (Test-Path $file) {
-      $fileSize = (Get-Item $file).Length
-      # Cek apakah file terdownload dengan benar (di atas 1 MB)
-      if ($fileSize -gt 1000000) { 
-          Write-Host "Download sukses! Menjalankan installer Chrome..." -ForegroundColor Green
-          Start-Process $file
-      } else {
-          Write-Error "File yang terunduh terlalu kecil ($fileSize bytes). Link Raw kemungkinan salah atau diblokir."
-      }
-  } else {
-      Write-Error "Gagal mengunduh file dari GitHub."
-  }
+    if (Test-Path $file) {
+        $fileSize = (Get-Item $file).Length
+        # Cek apakah file terdownload dengan benar (di atas 1 MB)
+        if ($fileSize -gt 1000000) { 
+            Write-Host "Download sukses! Menjalankan installer Chrome..." -ForegroundColor Green
+            
+            # PERBAIKAN DI SINI: Ditambahkan -Wait agar skrip menunggu Chrome selesai terinstal
+            Start-Process $file -Wait
+            
+            # Opsional: Hapus file installer setelah selesai agar folder Downloads tetap bersih
+            Remove-Item $file -Force
+        } else {
+            Write-Error "File yang terunduh terlalu kecil ($fileSize bytes). Link Raw kemungkinan salah atau diblokir."
+        }
+    } else {
+        Write-Error "Gagal mengunduh file dari GitHub."
+    }
 }
 
 function Install-Firefox {
