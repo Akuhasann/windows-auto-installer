@@ -373,6 +373,80 @@ function Run-OfficeModule {
     Read-Host "`nTekan Enter untuk kembali ke Menu Utama..."
     Show-MainMenu
 }
+function Install-Office2010 {
+    <#
+    .SYNOPSIS
+        Mengunduh, mengekstrak, dan menginstal Microsoft Office 2010 secara interaktif.
+    #>
+    
+    # 1. KONFIGURASI AWAL & PROTOKOL KEAMANAN
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+    
+    # Simpan folder aktif saat ini agar setelah instalasi selesai, posisi folder user tidak berubah
+    $originalLocation = Get-Location
+    cd $home\Downloads
+
+    $url = "https://github.com/Akuhasann/windows-auto-installer/releases/download/v1.0/OFFICE2010x64.rar"
+    $rarFile = "$home\Downloads\OFFICE2010x64.rar"
+    $extractFolder = "$env:TEMP\Office2010Installer"
+
+    # 2. PROSES DOWNLOAD DARI GITHUB RELEASES
+    Write-Host "==================================================" -ForegroundColor Gray
+    Write-Host "1. Memulai Unduhan Office 2010 dari GitHub..." -ForegroundColor Cyan
+    Write-Host "==================================================" -ForegroundColor Gray
+
+    try {
+        if (!(Test-Path $rarFile)) {
+            Invoke-WebRequest -Uri $url -OutFile $rarFile -ErrorAction Stop
+            Write-Host "Unduhan Selesai!" -ForegroundColor Green
+        } else {
+            Write-Host "File .rar sudah ada di folder Downloads, melewati proses unduh." -ForegroundColor Yellow
+        }
+    } 
+    catch {
+        Write-Host "`nGagal dalam proses unduhan!" -ForegroundColor Red
+        Write-Host "Pesan Error: $_" -ForegroundColor Yellow
+        cd $originalLocation # Kembalikan lokasi folder sebelum keluar
+        return # Keluar dari function karena file tidak ada
+    }
+
+    # 3. PROSES EKSTRAK MENGGUNAKAN WINRAR
+    Write-Host "`n==================================================" -ForegroundColor Gray
+    Write-Host "2. Mengekstrak File via WinRAR..." -ForegroundColor Cyan
+    Write-Host "==================================================" -ForegroundColor Gray
+
+    if (Test-Path "C:\Program Files\WinRAR\WinRAR.exe") {
+        if (!(Test-Path $extractFolder)) { New-Item -ItemType Directory -Path $extractFolder | Out-Null }
+        
+        Start-Process "C:\Program Files\WinRAR\WinRAR.exe" -ArgumentList "x `"$rarFile`" * `"$extractFolder\`" -ibck -y" -Wait
+        Write-Host "Ekstrak Selesai!" -ForegroundColor Green
+
+        # 4. PROSES INSTALASI (MUNCUL JENDELA / INTERAKTIF)
+        Write-Host "`n==================================================" -ForegroundColor Gray
+        Write-Host "3. Membuka Jendela Instalasi Office 2010..." -ForegroundColor Cyan
+        Write-Host "==================================================" -ForegroundColor Gray
+        
+        if (Test-Path "$extractFolder\setup.exe") {
+            Write-Host "Silakan selesaikan instalasi pada jendela Microsoft Office yang muncul." -ForegroundColor Yellow
+            
+            Start-Process "$extractFolder\setup.exe" -Wait
+            
+            # 5. PEMBERSIHAN OTOMATIS FOLDER TEMPORARY
+            Write-Host "`nJendela instalasi ditutup. Melakukan pembersihan..." -ForegroundColor Cyan
+            Remove-Item $extractFolder -Recurse -Force
+            
+            Write-Host "`n[SUKSES] Seluruh proses unduh, ekstrak, dan instalasi selesai!" -ForegroundColor Green
+        } else {
+            Write-Host "Error: File 'setup.exe' tidak ditemukan di hasil ekstrak!" -ForegroundColor Red
+        }
+    } else {
+        Write-Host "Error: Aplikasi WinRAR tidak ditemukan di 'C:\Program Files\WinRAR\WinRAR.exe'!" -ForegroundColor Red
+        Write-Host "Silakan install WinRAR terlebih dahulu atau ekstrak file secara manual." -ForegroundColor Yellow
+    }
+
+    # Kembalikan posisi folder aktif PowerShell ke tempat semula sebelum function dipanggil
+    cd $originalLocation
+}
 do {
 
 Clear-Host
@@ -396,6 +470,7 @@ Write-Host "11. Optimasi Servis"
 Write-Host "12. Uninstall Edge"
 Write-Host "13. Aktivasi Windows"
 Write-Host "14. Aktivasi Office"
+Write-Host "15. Install Office 2010"
 Write-Host "0. Exit"
 Write-Host ""
 
@@ -436,6 +511,8 @@ switch ($choice) {
     "13" { Run-WindowsModule }
 
     "14" { Run-OfficeModule }
+
+    "15" { Install-Office2010 }
 
     "0" {
         Write-Host "Keluar dari installer..."
